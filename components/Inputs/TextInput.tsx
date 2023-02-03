@@ -1,4 +1,4 @@
-import { Field } from "formik";
+import { ErrorMessage, Field } from "formik";
 import React from "react";
 import { TextInputProps } from "../../types/TextInput";
 
@@ -15,6 +15,9 @@ const TextInput = (props: TextInputProps) => {
         type={props.type}
         placeholder={props.placeholder}
       />
+      <div className="text-red-500 mt-1">
+        <ErrorMessage name={props.name} />
+      </div>
     </>
   );
 };

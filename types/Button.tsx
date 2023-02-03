@@ -1,7 +1,18 @@
+declare type SafeNumber = number | `${number}`;
+
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children?: string;
-  icon?: React.ReactElement;
+  icon?: IconProps;
   buttonText?: string;
   action?: Function;
+  buttonType?: string;
+  additionalClasses?: string;
+}
+
+export interface IconProps {
+  src: string;
+  alt: string;
+  width: SafeNumber | undefined;
+  height: SafeNumber | undefined;
 }

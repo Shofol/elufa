@@ -70,7 +70,7 @@ const RegisterForm = ({ initialValues }: { initialValues: RegisteredUser }) => {
             </div>
           </div>
           <div className="flex lg:justify-end">
-            <Button type="submit" buttonText="Submit" />
+            <Button type="submit" buttonText="Submit" buttonType="primary" />
           </div>
         </Form>
       </Formik>
