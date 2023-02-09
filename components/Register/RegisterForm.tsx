@@ -3,15 +3,71 @@ import React from "react";
 import Button from "../Buttons/Button";
 import { RegisteredUser } from "../../types/RegisterUserType";
 import TextInput from "../Inputs/TextInput";
+import { Account, Client, Databases, ID, Permission, Role } from "appwrite";
+import { useRouter } from "next/router";
 
 const RegisterForm = ({ initialValues }: { initialValues: RegisteredUser }) => {
+  const client = new Client();
+
+  const databases = new Databases(client);
+
+  client.setEndpoint("http://localhost/v1").setProject("63dd1abbce9d9aa7a0aa");
+  const account = new Account(client);
+
+  const promise = account.createEmailSession(
+    "jahananower@gmail.com",
+    "#ElUfA420$"
+  );
+
+  promise.then(
+    function (response) {
+      console.log(response); // Success
+    },
+    function (error) {
+      console.log(error); // Failure
+    }
+  );
+
+  const router = useRouter();
+
   return (
     <div>
       <Formik
         initialValues={initialValues}
         onSubmit={(values, actions) => {
           console.log({ values, actions });
-          alert(JSON.stringify(values, null, 2));
+          router.push("/adminDashboard");
+          return;
+          // alert(JSON.stringify(values, null, 2));
+
+          const today = new Date();
+          const endDate = new Date();
+          endDate.setDate(today.getDate() + 364);
+
+          const promise = databases.createDocument(
+            "63e4e48ae593c02f0853",
+            "63e4e49988ec6cfee60f",
+            ID.unique(),
+            {
+              email: values.email,
+              company: values.company,
+              firstName: values.firstName,
+              lastName: values.lastName,
+              phoneNumber: values.phoneNumber,
+              licenseStartDate: today,
+              licenseEndDate: endDate,
+            }
+          );
+
+          promise.then(
+            function (response) {
+              console.log(response); // Success
+            },
+            function (error) {
+              console.log(error); // Failure
+            }
+          );
+
           actions.setSubmitting(false);
         }}
       >
@@ -79,3 +135,6 @@ const RegisterForm = ({ initialValues }: { initialValues: RegisteredUser }) => {
 };
 
 export default RegisterForm;
+function userRouter() {
+  throw new Error("Function not implemented.");
+}

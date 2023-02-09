@@ -4,14 +4,17 @@ import Button from "../Buttons/Button";
 import { LoginUser } from "../../types/RegisterUserType";
 import TextInput from "../Inputs/TextInput";
 import { Account, Client, ID } from "appwrite";
+import { useRouter } from "next/router";
 
 const LoginForm = ({ initialValues }: { initialValues: LoginUser }) => {
   const client = new Client();
 
   client.setEndpoint("http://localhost/v1").setProject("63dd1abbce9d9aa7a0aa");
 
+  const router = useRouter();
+
   return (
-    <div>
+    <div className="max-w-xl">
       <Formik
         initialValues={initialValues}
         validate={(values) => {
@@ -33,24 +36,23 @@ const LoginForm = ({ initialValues }: { initialValues: LoginUser }) => {
           return errors;
         }}
         onSubmit={(values, actions) => {
-          alert(values);
           const account = new Account(client);
+          router.push("/dashboard");
+          // const promise = account.create(
+          //   ID.unique(),
+          //   values.email,
+          //   values.password
+          // );
 
-          const promise = account.create(
-            ID.unique(),
-            values.email,
-            values.password
-          );
-
-          promise.then(
-            function (response) {
-              console.log(response);
-            },
-            function (error) {
-              console.log(error);
-            }
-          );
-          actions.setSubmitting(false);
+          // promise.then(
+          //   function (response) {
+          //     console.log(response);
+          //   },
+          //   function (error) {
+          //     console.log(error);
+          //   }
+          // );
+          // actions.setSubmitting(false);
         }}
       >
         {({ errors, touched }) => (
@@ -60,8 +62,8 @@ const LoginForm = ({ initialValues }: { initialValues: LoginUser }) => {
                 <TextInput
                   type="email"
                   name="email"
-                  label="Customer Email"
-                  placeholder="Enter Customer Email"
+                  label="Login Email Address"
+                  placeholder="Enter Login Email Address"
                 />
               </div>
 

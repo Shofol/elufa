@@ -5,53 +5,90 @@ import { motion } from "framer-motion";
 
 const dashboard = () => {
   return (
-    <div className="w-screen min-h-screen dark:bg-gradient-to-tr from-br-blue to-blue-800">
-      <div className="bg-blue-500 dark:bg-gray-200 w-full px-10 py-2">
-        <Image src="/logo.png" width={50} height={50} alt="logo" />
+    <div className="w-screen min-h-screen flex dark:bg-gradient-to-tr from-br-blue to-blue-800">
+      <div className="w-3/5	hidden min-h-screen lg:flex justify-center items-center bg-gradient-to-tr from-br-blue to-blue-800 relative">
+        <Image src="/userPortalBg.png" fill alt="verification" />
       </div>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1 }}
-        className=" flex flex-wrap justify-center items-center max-w-5xl mx-auto mt-40"
-      >
-        <Button
-          additionalClasses="bg-blue-500 m-5 p-1 hover:scale-110 duration-200 shadow-md"
-          icon={{ src: "/1.png", width: 120, height: 120, alt: "test" }}
-        />
-        <Button
-          additionalClasses="bg-blue-500 m-5 p-1 hover:scale-110 duration-200 shadow-md"
-          icon={{ src: "/2.png", width: 120, height: 120, alt: "test" }}
-        />
-        <Button
-          additionalClasses="bg-blue-500 m-5 p-1 hover:scale-110 duration-200 shadow-md"
-          icon={{ src: "/3.png", width: 120, height: 120, alt: "test" }}
-        />
-        <Button
-          additionalClasses="bg-blue-500 m-5 p-1 hover:scale-110 duration-200 shadow-md"
-          icon={{ src: "/4.png", width: 120, height: 120, alt: "test" }}
-        />
-        <Button
-          additionalClasses="bg-blue-500 m-5 p-1 hover:scale-110 duration-200 shadow-md"
-          icon={{ src: "/5.png", width: 120, height: 120, alt: "test" }}
-        />
-        <Button
-          additionalClasses="bg-blue-500 m-5 p-1 hover:scale-110 duration-200 shadow-md"
-          icon={{ src: "/6.png", width: 120, height: 120, alt: "test" }}
-        />
-        <Button
-          additionalClasses="bg-blue-500 m-5 p-1 hover:scale-110 duration-200 shadow-md"
-          icon={{ src: "/7.png", width: 120, height: 120, alt: "test" }}
-        />
-        <Button
-          additionalClasses="bg-blue-500 m-5 p-1 hover:scale-110 duration-200 shadow-md"
-          icon={{ src: "/8.png", width: 120, height: 120, alt: "test" }}
-        />
-        <Button
-          additionalClasses="bg-blue-500 m-5 p-1 hover:scale-110 duration-200 shadow-md"
-          icon={{ src: "/9.png", width: 120, height: 120, alt: "test" }}
-        />
-      </motion.div>
+      <div className="w-full flex flex-col">
+        <div className="bg-br-blue px-10 py-2 flex flex-col items-end">
+          <div className="flex items-center">
+            <p className="text-gray-200 text-sm mr-1">user@gmail.com</p>
+            <Image src="/verified.png" width={15} height={15} alt="active" />
+          </div>
+          <p className="text-gray-400 text-xs">
+            Key Expiry Date: July 26, 2024
+          </p>
+        </div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1 }}
+          className="grid grid-cols-1 lg:grid-cols-3  max-w-5xl mx-auto mt-24"
+        >
+          <div className="bg-blue-500 h-36 w-36 m-5 p-1 hover:scale-110 duration-200 shadow-md">
+            <Button
+              additionalClasses="bg-white p-2 h-full"
+              icon={{ src: "/2.png", width: 120, height: 120, alt: "test" }}
+            />
+          </div>
+          <div className="bg-blue-500 h-36 w-36 m-5 hover:scale-110 duration-200 shadow-md flex items-center justify-center">
+            <Button
+              additionalClasses="h-full py-1"
+              icon={{ src: "/3.png", width: 135, height: 120, alt: "test" }}
+            />
+          </div>
+
+          <div className="bg-blue-500 h-36 w-36 m-5 hover:scale-110 duration-200 shadow-md flex items-center justify-center">
+            <Button
+              additionalClasses="h-full"
+              icon={{ src: "/4.png", width: 135, height: 120, alt: "test" }}
+            />
+          </div>
+          <div className="bg-blue-500 h-36 w-36 m-5 p-1 hover:scale-110 duration-200 shadow-md">
+            <Button
+              additionalClasses="bg-white p-2 h-full"
+              icon={{ src: "/1.png", width: 120, height: 120, alt: "test" }}
+            />
+          </div>
+
+          <div className="bg-blue-500 h-36 w-36 m-5 p-1 hover:scale-110 duration-200 shadow-md">
+            <Button
+              additionalClasses="bg-white p-2 h-full"
+              icon={{ src: "/5.png", width: 120, height: 120, alt: "test" }}
+            />
+          </div>
+
+          <div className="bg-blue-500 h-36 w-36 m-5 p-1 hover:scale-110 duration-200 shadow-md">
+            <Button
+              additionalClasses="bg-white p-2 h-full flex items-center"
+              icon={{ src: "/6.png", width: 120, height: 120, alt: "test" }}
+            />
+          </div>
+
+          <div className="bg-blue-500 h-36 w-36 m-5 hover:scale-110 duration-200 shadow-md flex items-center justify-center">
+            <Button
+              additionalClasses="h-full"
+              icon={{ src: "/7.png", width: 135, height: 120, alt: "test" }}
+            />
+          </div>
+
+          <div className="bg-blue-500 h-36 w-36 m-5 p-1 hover:scale-110 duration-200 shadow-md">
+            <Button
+              additionalClasses="bg-white p-2 h-full"
+              icon={{ src: "/8.png", width: 120, height: 120, alt: "test" }}
+            />
+          </div>
+
+          <div className="bg-blue-500 h-36 w-36 m-5 p-1 hover:scale-110 duration-200 shadow-md">
+            <div className="bg-white flex justify-center items-center">
+              <Button
+                additionalClasses="p-2 h-full"
+                icon={{ src: "/9.png", width: 80, height: 120, alt: "test" }}
+              />
+            </div>
+          </div>
+        </motion.div>
+      </div>
     </div>
   );
 };

@@ -5,7 +5,7 @@ export interface ButtonProps
   children?: string;
   icon?: IconProps;
   buttonText?: string;
-  action?: Function;
+  action?: any;
   buttonType?: string;
   additionalClasses?: string;
 }

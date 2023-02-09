@@ -13,11 +13,7 @@ const Button = (props: ButtonProps) => {
   );
 
   return (
-    <button
-      type={props.type}
-      className={btnClass}
-      onClick={(e) => props.action}
-    >
+    <button type={props.type} className={btnClass} onClick={props.action}>
       {props.buttonText}
       {props.icon && (
         <Image
