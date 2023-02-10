@@ -34,6 +34,7 @@ const FormContainer = () => {
               : "/userLoginBg.png"
           }
           fill
+          style={{ objectFit: "cover" }}
           alt="verification"
         />
         {/* <motion.div
