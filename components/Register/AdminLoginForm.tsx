@@ -1,28 +1,60 @@
-import { Form, Formik, FormikErrors } from "formik";
-import React from "react";
+import React, { useEffect } from "react";
 import Button from "../Buttons/Button";
-import { LoginUser } from "../../types/RegisterUserType";
-import TextInput from "../Inputs/TextInput";
 import { Account, Client, ID } from "appwrite";
 import { useRouter } from "next/router";
+import { AuthDispatch, useAuth } from "../../context/AuthContextProvider";
+import { SET_ADMIN_SESSION } from "../../context/actions";
 
 const AdminLoginForm = () => {
+  const dispatch: any = AuthDispatch();
   const client = new Client();
-
-  client.setEndpoint("http://localhost/v1").setProject("63dd1abbce9d9aa7a0aa");
-  // const account = new Account(client);
-  // account.createOAuth2Session("google");
-
+  const account = new Account(client);
   const router = useRouter();
-  const handleClick = () => {
-    router.push("/adminDashboard");
+
+  client
+    .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT || "")
+    .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID || "");
+
+  useEffect(() => {
+    const promise = account.getSession("current");
+
+    promise.then(
+      function (response) {
+        dispatch({ type: SET_ADMIN_SESSION, isAdminLoggedIn: true });
+        router.push("/adminDashboard");
+      },
+      function (error) {
+        console.log(error); // Failure
+      }
+    );
+  }, []);
+
+  const handleClick = async () => {
+    // try {
+    const URL = await account.createOAuth2Session(
+      "google",
+      `${window.location.origin}/adminLogin`,
+      `${window.location.origin}/adminLogin`
+    );
+    console.log(URL);
+    //   if (URL) {
+    //     router.push("/adminDashboard");
+    //   }
+    // } catch (e) {
+    //   router.push("/adminLogin");
+    // }
   };
 
   return (
     <div className="max-w-xl">
       <Button
-        additionalClasses="bg-blue-500 px-5 py-2 text-xl"
-        buttonText="Sign in with Google"
+        additionalClasses="hover:opacity-80 duration-200"
+        icon={{
+          src: "/google_signin.png",
+          alt: "google",
+          width: "200",
+          height: "100",
+        }}
         action={handleClick}
       ></Button>
       {/* <Formik

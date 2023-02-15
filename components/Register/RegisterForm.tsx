@@ -1,74 +1,85 @@
-import { Form, Formik } from "formik";
+import { ErrorMessage, Form, Formik } from "formik";
 import React from "react";
 import Button from "../Buttons/Button";
-import { RegisteredUser } from "../../types/RegisterUserType";
 import TextInput from "../Inputs/TextInput";
-import { Account, Client, Databases, ID, Permission, Role } from "appwrite";
 import { useRouter } from "next/router";
+import { CustomerData } from "../../types/Customer";
+import { toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const RegisterForm = ({ initialValues }: { initialValues: RegisteredUser }) => {
-  const client = new Client();
+const RegisterForm = ({ initialValues }: { initialValues: CustomerData }) => {
+  const createCustomer = async (values: CustomerData) => {
+    values.userId = values.email
+      ? values.email.split("@")[0] + Math.floor(Math.random() * 90000) + 10000
+      : "";
+    const response: any = await fetch("/api/customer", {
+      method: "POST",
+      body: JSON.stringify({ values: values }),
+    });
+    return response.json();
+  };
 
-  const databases = new Databases(client);
+  const updatePasswrod = async (response: any) => {
+    const passResponse = await fetch("/api/updatePassword", {
+      method: "POST",
+      body: JSON.stringify({ documentId: response.$id }),
+    });
+    return passResponse.json();
+  };
 
-  client.setEndpoint("http://localhost/v1").setProject("63dd1abbce9d9aa7a0aa");
-  const account = new Account(client);
+  const validate = (values: CustomerData) => {
+    const errors: any = {};
 
-  const promise = account.createEmailSession(
-    "jahananower@gmail.com",
-    "#ElUfA420$"
-  );
-
-  promise.then(
-    function (response) {
-      console.log(response); // Success
-    },
-    function (error) {
-      console.log(error); // Failure
+    if (!values.email) {
+      errors.email = "Customer Email is Required";
+    } else if (
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
+    ) {
+      errors.email = "Invalid email address";
     }
-  );
 
-  const router = useRouter();
+    if (!values.company) {
+      errors.company = "Customer Company is Required";
+    }
+
+    if (!values.firstName) {
+      errors.firstName = "First Name is Required";
+    }
+
+    if (!values.lastName) {
+      errors.lastName = "Last Name is Required";
+    }
+
+    if (!values.phoneNumber) {
+      errors.phoneNumber = "Phone Number is Required";
+    }
+
+    return errors;
+  };
 
   return (
     <div>
       <Formik
         initialValues={initialValues}
-        onSubmit={(values, actions) => {
-          console.log({ values, actions });
-          router.push("/adminDashboard");
-          return;
-          // alert(JSON.stringify(values, null, 2));
+        validate={validate}
+        onSubmit={async (values, actions) => {
+          const response = await createCustomer(values);
+          const passResponse = await updatePasswrod(response);
 
-          const today = new Date();
-          const endDate = new Date();
-          endDate.setDate(today.getDate() + 364);
-
-          const promise = databases.createDocument(
-            "63e4e48ae593c02f0853",
-            "63e4e49988ec6cfee60f",
-            ID.unique(),
-            {
-              email: values.email,
-              company: values.company,
-              firstName: values.firstName,
-              lastName: values.lastName,
-              phoneNumber: values.phoneNumber,
-              licenseStartDate: today,
-              licenseEndDate: endDate,
-            }
-          );
-
-          promise.then(
-            function (response) {
-              console.log(response); // Success
-            },
-            function (error) {
-              console.log(error); // Failure
-            }
-          );
+          toast(passResponse.response ? "New customer created" : "Error", {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
 
           actions.setSubmitting(false);
+          actions.resetForm();
         }}
       >
         <Form className="text-gray-500 text-xs font-poppins">
@@ -117,19 +128,14 @@ const RegisterForm = ({ initialValues }: { initialValues: RegisteredUser }) => {
                 placeholder="Enter Phone Number"
               />
             </div>
-            <div className="flex flex-col flex-1">
-              <TextInput
-                name="licenseStartDate"
-                label="License Start Date"
-                placeholder="Enter License Start Date"
-              />
-            </div>
+            <div className="hidden lg:flex flex-col flex-1"></div>
           </div>
           <div className="flex lg:justify-end">
             <Button type="submit" buttonText="Submit" buttonType="primary" />
           </div>
         </Form>
       </Formik>
+      <ToastContainer />
     </div>
   );
 };

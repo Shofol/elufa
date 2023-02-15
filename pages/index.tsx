@@ -1,10 +1,5 @@
 import Head from "next/head";
-import Image from "next/image";
 import { Inter } from "@next/font/google";
-import { motion } from "framer-motion";
-import { RegisteredUser } from "../types/RegisterUserType";
-import RegisterForm from "../components/Register/RegisterForm";
-import FormContainer from "../components/Register/FormContainer";
 import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });

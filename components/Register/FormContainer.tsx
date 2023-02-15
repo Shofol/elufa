@@ -1,14 +1,14 @@
 import React from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
-import { LoginUser, RegisteredUser } from "../../types/RegisterUserType";
 import RegisterForm from "./RegisterForm";
 import { useRouter } from "next/router";
 import LoginForm from "./LoginForm";
 import AdminLoginForm from "./AdminLoginForm";
+import { AuthContextProvider } from "../../context/AuthContextProvider";
+import { CustomerData, LoginUser } from "../../types/Customer";
 
 const FormContainer = () => {
-  const initialValues: RegisteredUser = {
+  const initialValues: CustomerData = {
     email: "",
     company: "",
     firstName: "",
@@ -18,7 +18,7 @@ const FormContainer = () => {
   };
 
   const initialLoginValues: LoginUser = {
-    email: "",
+    userId: "",
     password: "",
   };
 
@@ -37,21 +37,6 @@ const FormContainer = () => {
           style={{ objectFit: "cover" }}
           alt="verification"
         />
-        {/* <motion.div
-          animate={{ translateY: [0, 20, 0] }}
-          transition={{
-            repeat: Infinity,
-            duration: 10,
-            ease: "easeInOut",
-          }}
-        >
-          <Image
-            src="/verification.svg"
-            width={300}
-            height={300}
-            alt="verification"
-          />
-        </motion.div> */}
       </div>
       <div className="flex-1 flex flex-col bg-white dark:bg-gray-900 justify-center px-5 lg:px-20 ">
         <Image src="/logo.png" width={100} height={200} alt="logo" />
@@ -61,13 +46,15 @@ const FormContainer = () => {
             ? "Enter the customer details."
             : "Please enter login details."}
         </h1>
-        {router.pathname === "/addCustomer" && (
-          <RegisterForm initialValues={initialValues} />
-        )}
-        {router.pathname === "/login" && (
-          <LoginForm initialValues={initialLoginValues} />
-        )}
-        {router.pathname === "/adminLogin" && <AdminLoginForm />}
+        <AuthContextProvider>
+          {router.pathname === "/adminDashboard/addCustomer" && (
+            <RegisterForm initialValues={initialValues} />
+          )}
+          {router.pathname === "/login" && (
+            <LoginForm initialValues={initialLoginValues} />
+          )}
+          {router.pathname === "/adminLogin" && <AdminLoginForm />}
+        </AuthContextProvider>
       </div>
     </div>
   );

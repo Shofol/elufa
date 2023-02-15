@@ -1,15 +1,17 @@
 import { Form, Formik, FormikErrors } from "formik";
 import React from "react";
 import Button from "../Buttons/Button";
-import { LoginUser } from "../../types/RegisterUserType";
 import TextInput from "../Inputs/TextInput";
 import { Account, Client, ID } from "appwrite";
 import { useRouter } from "next/router";
+import { LoginUser } from "../../types/Customer";
 
 const LoginForm = ({ initialValues }: { initialValues: LoginUser }) => {
   const client = new Client();
 
-  client.setEndpoint("http://localhost/v1").setProject("63dd1abbce9d9aa7a0aa");
+  client
+    .setEndpoint("http://64.176.40.159:8080/v1")
+    .setProject("63e73ee3bce1276c225e");
 
   const router = useRouter();
 
@@ -19,16 +21,12 @@ const LoginForm = ({ initialValues }: { initialValues: LoginUser }) => {
         initialValues={initialValues}
         validate={(values) => {
           let errors: any = {};
-          if (!values.email) {
-            errors.email = "Required";
-          } else if (
-            !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-          ) {
-            errors.email = "Invalid email address";
+          if (!values.userId) {
+            errors.userId = "User ID is Required";
           }
 
           if (!values.password) {
-            errors.password = "Required";
+            errors.password = "Password is Required";
           } else if (values.password.length < 8) {
             errors.password = "Password must be at least 8 characters long";
           }
@@ -60,10 +58,10 @@ const LoginForm = ({ initialValues }: { initialValues: LoginUser }) => {
             <div className="flex flex-col  justify-start my-7">
               <div className="flex flex-col flex-1 mb-5">
                 <TextInput
-                  type="email"
-                  name="email"
-                  label="Login Email Address"
-                  placeholder="Enter Login Email Address"
+                  type="text"
+                  name="userId"
+                  label="User ID"
+                  placeholder="Enter User ID"
                 />
               </div>
 
@@ -77,7 +75,13 @@ const LoginForm = ({ initialValues }: { initialValues: LoginUser }) => {
               </div>
             </div>
 
-            <div className="flex lg:justify-end">
+            <div className="flex lg:justify-between items-start">
+              <div className="flex flex-col items-start">
+                <button className="mb-1 hover:underline">
+                  Forgot Password
+                </button>
+                <button className="hover:underline">Forgot UserID</button>
+              </div>
               <Button type="submit" buttonText="Submit" buttonType="primary" />
             </div>
           </Form>

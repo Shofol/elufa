@@ -1,14 +1,21 @@
 import Head from "next/head";
-import Image from "next/image";
 import { Inter } from "@next/font/google";
-import { motion } from "framer-motion";
-import { RegisteredUser } from "../types/RegisterUserType";
-import RegisterForm from "../components/Register/RegisterForm";
-import FormContainer from "../components/Register/FormContainer";
-
-const inter = Inter({ subsets: ["latin"] });
+import FormContainer from "../../components/Register/FormContainer";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
+import { useAuth } from "../../context/AuthContextProvider";
 
 export default function AddCustomer() {
+  const router = useRouter();
+  const authState: any = useAuth();
+
+  useEffect(() => {
+    console.log(authState.isAdminLoggedIn);
+    if (!authState.isAdminLoggedIn) {
+      router.push("/adminLogin");
+    }
+  }, [authState]);
+
   return (
     <>
       <Head>

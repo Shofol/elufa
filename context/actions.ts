@@ -1,0 +1,1 @@
+export const SET_ADMIN_SESSION = 'SET_ADMIN_SESSION'

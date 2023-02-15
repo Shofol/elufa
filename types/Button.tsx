@@ -15,4 +15,5 @@ export interface IconProps {
   alt: string;
   width: SafeNumber | undefined;
   height: SafeNumber | undefined;
+  class?: string;
 }

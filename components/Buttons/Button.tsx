@@ -5,7 +5,7 @@ import classNames from "classnames";
 
 const Button = (props: ButtonProps) => {
   var btnClass = classNames(
-    "text-white text-xs rounded-sm",
+    "text-white text-xs rounded-sm hover:opacity-80 duration-100 flex items-center",
     props.additionalClasses ? props.additionalClasses : "",
     {
       "bg-br-blue px-6 py-2 w-full lg:w-auto": props.buttonType === "primary",
@@ -14,15 +14,16 @@ const Button = (props: ButtonProps) => {
 
   return (
     <button type={props.type} className={btnClass} onClick={props.action}>
-      {props.buttonText}
       {props.icon && (
         <Image
           src={props.icon.src}
           width={props.icon.width}
           height={props.icon.height}
           alt={props.icon.alt}
+          className={props.icon.class}
         />
       )}
+      {props.buttonText}
     </button>
   );
 };
