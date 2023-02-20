@@ -4,8 +4,12 @@
 @tailwind components;
 @tailwind utilities;
 
-body{
+body {
   overflow-x: hidden;
+}
+
+.el-border {
+  border-radius: 49% 51% 41% 59% / 58% 47% 53% 42%;
 }
 /* 
 :root {

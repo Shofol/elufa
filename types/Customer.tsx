@@ -28,6 +28,12 @@ export enum LicenseStatus {
 }
 
 export type LoginUser = {
+  email?: string;
   userId: string;
   password: string;
+};
+
+export type UpdatePassword = {
+  password: string;
+  confirmPassword: string;
 };

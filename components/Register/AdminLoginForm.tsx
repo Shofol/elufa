@@ -10,31 +10,32 @@ const AdminLoginForm = () => {
   const client = new Client();
   const account = new Account(client);
   const router = useRouter();
-
   client
     .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT || "")
     .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID || "");
 
   useEffect(() => {
-    const promise = account.getSession("current");
+    if (router.isReady && router.query["fromRedirectSuccess"]) {
+      const promise = account.getSession("current");
 
-    promise.then(
-      function (response) {
-        dispatch({ type: SET_ADMIN_SESSION, isAdminLoggedIn: true });
-        router.push("/adminDashboard");
-      },
-      function (error) {
-        console.log(error); // Failure
-      }
-    );
-  }, []);
+      promise.then(
+        function (response) {
+          dispatch({ type: SET_ADMIN_SESSION, isAdminLoggedIn: true });
+          router.push("/adminDashboard");
+        },
+        function (error) {
+          console.log(error); // Failure
+        }
+      );
+    }
+  }, [router.isReady]);
 
   const handleClick = async () => {
     // try {
     const URL = await account.createOAuth2Session(
       "google",
-      `${window.location.origin}/adminLogin`,
-      `${window.location.origin}/adminLogin`
+      `${window.location.origin}/adminLogin?fromRedirectSuccess=true`,
+      `${window.location.origin}/adminLogin?fromRedirectFailure=true`
     );
     console.log(URL);
     //   if (URL) {

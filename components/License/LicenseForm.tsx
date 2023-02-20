@@ -156,7 +156,7 @@ const LicenseForm = ({ initialValues }: { initialValues: CustomerData }) => {
                     onChange={(event) => handleSearch(key, event.target.value)}
                     className=" bg-white dark:border-none dark:bg-gray-700 dark:text-gray-200 border px-3 py-3 rounded-md text-xs focus:border-br-blue outline-none"
                   />
-                  {filteredCustomer.length > 0 && (
+                  {filteredCustomer && filteredCustomer.length > 0 && (
                     <Combobox.Options className="absolute top-12 left-0 z-10 max-h-48 overflow-y-scroll w-full bg-white dark:border-none dark:bg-gray-700 dark:text-gray-200 border ">
                       {filteredCustomer.map((customer: any) => (
                         <Combobox.Option

@@ -1,19 +1,39 @@
 import { Form, Formik, FormikErrors } from "formik";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../Buttons/Button";
 import TextInput from "../Inputs/TextInput";
-import { Account, Client, ID } from "appwrite";
 import { useRouter } from "next/router";
 import { LoginUser } from "../../types/Customer";
+import { Account, Client } from "appwrite";
+import Link from "next/link";
 
 const LoginForm = ({ initialValues }: { initialValues: LoginUser }) => {
-  const client = new Client();
-
-  client
-    .setEndpoint("http://64.176.40.159:8080/v1")
-    .setProject("63e73ee3bce1276c225e");
-
   const router = useRouter();
+  const client = new Client();
+  const account = new Account(client);
+  client
+    .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT || "")
+    .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID || "");
+
+  const login = async (userId: string, password: string) => {
+    const passResponse = await fetch("/api/login", {
+      method: "POST",
+      body: JSON.stringify({ userId: userId, password: password }),
+    });
+    return passResponse.json();
+  };
+
+  // const createSession = async (email: string, password: string) => {
+  //   const passResponse = await fetch("/api/userSession", {
+  //     method: "POST",
+  //     body: JSON.stringify({ email: email, password: password }),
+  //   });
+  //   return passResponse.json();
+  // };
+
+  useEffect(() => {
+    localStorage.removeItem("auth");
+  }, []);
 
   return (
     <div className="max-w-xl">
@@ -33,24 +53,32 @@ const LoginForm = ({ initialValues }: { initialValues: LoginUser }) => {
 
           return errors;
         }}
-        onSubmit={(values, actions) => {
-          const account = new Account(client);
-          router.push("/dashboard");
-          // const promise = account.create(
-          //   ID.unique(),
-          //   values.email,
-          //   values.password
-          // );
+        onSubmit={async (values, actions) => {
+          const response = await login(values.userId, values.password);
+          const userEmail = JSON.parse(response.response).email;
+          const userPassword = values.password;
 
-          // promise.then(
-          //   function (response) {
-          //     console.log(response);
-          //   },
-          //   function (error) {
-          //     console.log(error);
-          //   }
-          // );
-          // actions.setSubmitting(false);
+          const promise: any = account.createEmailSession(
+            userEmail,
+            userPassword
+          );
+          promise.then(
+            function (response: any) {
+              console.log(response);
+              if (response.$id) {
+                localStorage.setItem(
+                  "auth",
+                  JSON.stringify({ isUserLoggedIn: true })
+                );
+                router.push(`/dashboard?userId=${values.userId}`);
+              }
+            },
+            function (error: any) {
+              console.log(error); // Failure
+            }
+          );
+
+          actions.setSubmitting(false);
         }}
       >
         {({ errors, touched }) => (
@@ -77,10 +105,12 @@ const LoginForm = ({ initialValues }: { initialValues: LoginUser }) => {
 
             <div className="flex lg:justify-between items-start">
               <div className="flex flex-col items-start">
-                <button className="mb-1 hover:underline">
+                <Link href="/login/sendEmail" className="mb-1 hover:underline">
                   Forgot Password
-                </button>
-                <button className="hover:underline">Forgot UserID</button>
+                </Link>
+                <Link href="/login/forgotUserId" className="hover:underline">
+                  Forgot UserID
+                </Link>
               </div>
               <Button type="submit" buttonText="Submit" buttonType="primary" />
             </div>

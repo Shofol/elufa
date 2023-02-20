@@ -1,4 +1,4 @@
-import { Client, Functions } from "appwrite";
+import { Account, Client, Functions } from "appwrite";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 type Data = {
@@ -10,19 +10,17 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   if (req.method === "POST") {
-    const userId = JSON.parse(req.body).userId;
+    const email = JSON.parse(req.body).email;
     const password = JSON.parse(req.body).password;
 
     const client = new Client();
+    const account = new Account(client);
     client
       .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT || "")
       .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID || "");
     try {
-      const functions = new Functions(client);
-      let promise: any = await functions.createExecution(
-        process.env.NEXT_PUBLIC_LOGIN_FUNCTION_ID || "",
-        JSON.stringify({ userId: userId, password: password })
-      );
+      const promise: any = await account.createEmailSession(email, password);
+
       res.status(200).json(promise);
     } catch (error: any) {
       res.status(500).json(error);

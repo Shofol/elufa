@@ -10,9 +10,6 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   if (req.method === "POST") {
-    const userId = JSON.parse(req.body).userId;
-    const password = JSON.parse(req.body).password;
-
     const client = new Client();
     client
       .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT || "")
@@ -20,8 +17,12 @@ export default async function handler(
     try {
       const functions = new Functions(client);
       let promise: any = await functions.createExecution(
-        process.env.NEXT_PUBLIC_LOGIN_FUNCTION_ID || "",
-        JSON.stringify({ userId: userId, password: password })
+        process.env.NEXT_PUBLIC_SEND_RESET_EMAIL_FUNCTION_ID || "",
+        JSON.stringify({
+          email: JSON.parse(req.body).email,
+          resetLink: JSON.parse(req.body).resetLink || null,
+          forgotPassword: JSON.parse(req.body).forgotPassword || null,
+        })
       );
       res.status(200).json(promise);
     } catch (error: any) {

@@ -7,8 +7,27 @@ import { CustomerData } from "../../types/Customer";
 import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Account, Client } from "appwrite";
 
 const RegisterForm = ({ initialValues }: { initialValues: CustomerData }) => {
+  const client = new Client();
+
+  const account = new Account(client);
+
+  client
+    .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT || "")
+    .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID || "");
+
+  const promise = account.getSession("current");
+  promise.then(
+    function (response) {
+      console.log(response); // Success
+    },
+    function (error) {
+      console.log(error); // Failure
+    }
+  );
+
   const createCustomer = async (values: CustomerData) => {
     values.userId = values.email
       ? values.email.split("@")[0] + Math.floor(Math.random() * 90000) + 10000
@@ -24,6 +43,15 @@ const RegisterForm = ({ initialValues }: { initialValues: CustomerData }) => {
     const passResponse = await fetch("/api/updatePassword", {
       method: "POST",
       body: JSON.stringify({ documentId: response.$id }),
+    });
+    return passResponse.json();
+  };
+
+  const createUser = async (email: any, password: any) => {
+    console.log(password);
+    const passResponse = await fetch("/api/user", {
+      method: "POST",
+      body: JSON.stringify({ email: email, password: password }),
     });
     return passResponse.json();
   };
@@ -66,6 +94,10 @@ const RegisterForm = ({ initialValues }: { initialValues: CustomerData }) => {
         onSubmit={async (values, actions) => {
           const response = await createCustomer(values);
           const passResponse = await updatePasswrod(response);
+          const userResponse = await createUser(
+            values.email,
+            passResponse.response
+          );
 
           toast(passResponse.response ? "New customer created" : "Error", {
             position: "top-right",

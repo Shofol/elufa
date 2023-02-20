@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useReducer } from "react";
-import { SET_ADMIN_SESSION } from "./actions";
+import { SET_ADMIN_SESSION, SET_USER_SESSION } from "./actions";
 
 const initialState = {
   isAdminLoggedIn: false,
@@ -14,11 +14,10 @@ const getInitialState = () => {
   ) {
     return JSON.parse(localStorage.auth);
   }
-  return initialState;
 };
 
-const AuthContext: any = createContext(getInitialState());
-const AuthDispatchContext: any = createContext(null);
+export const AuthContext: any = createContext(getInitialState());
+export const AuthDispatchContext: any = createContext(null);
 
 export function AuthContextProvider({ children }: { children: any }) {
   const [authState, dispatch] = useReducer(authReducer, getInitialState());
@@ -37,6 +36,7 @@ export function AuthContextProvider({ children }: { children: any }) {
 }
 
 export function useAuth() {
+  console.log(AuthContext);
   return useContext(AuthContext);
 }
 
@@ -51,6 +51,15 @@ function authReducer(authState: any, action: any) {
         ...authState,
         isAdminLoggedIn: action.isAdminLoggedIn,
       };
+    }
+    case SET_USER_SESSION: {
+      return {
+        ...authState,
+        isUserLoggedIn: action.isUserLoggedIn,
+      };
+    }
+    default: {
+      return authState;
     }
   }
 }

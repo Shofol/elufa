@@ -1,4 +1,4 @@
-import { Client, Databases, ID, Query } from "appwrite";
+import { Account, Client, Databases, ID, Query } from "appwrite";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { CustomerData } from "../../types/Customer";
 
