@@ -38,7 +38,7 @@ const FormContainer = () => {
       <div className="w-2/5	hidden lg:flex justify-center items-center bg-gradient-to-tr from-br-blue to-blue-800 relative">
         <Image
           src={
-            router.pathname === "/adminLogin"
+            router.pathname === "/adminlogin"
               ? "/adminLoginBg.png"
               : "/userLoginBg.png"
           }
@@ -79,7 +79,7 @@ const FormContainer = () => {
           {router.pathname === "/login/updatePassword" && (
             <UpdatePassword initialValues={initialPasswordValues} />
           )}
-          {router.pathname === "/adminLogin" && <AdminLoginForm />}
+          {router.pathname === "/adminlogin" && <AdminLoginForm />}
         </AuthContextProvider>
       </div>
     </div>

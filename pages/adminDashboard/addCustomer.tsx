@@ -12,7 +12,7 @@ export default function AddCustomer() {
   useEffect(() => {
     console.log(authState.isAdminLoggedIn);
     if (!authState.isAdminLoggedIn) {
-      router.push("/adminLogin");
+      router.push("/adminlogin");
     }
   }, [authState]);
 
