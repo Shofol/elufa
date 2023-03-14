@@ -36,7 +36,7 @@ export default function Home() {
         <meta name="theme-color" content="#ffffff" />
       </Head>
       <main className="min-h-screen min-w-screen flex items-center relative">
-        <div className="absolute left-0 top-0 w-full h-full bg-black opacity-20 z-10"></div>
+        <div className="absolute left-0 top-0 w-full h-full bg-black opacity-40 z-10"></div>
         <Image src="/landingBg.png" fill alt="landing page background" />
         <div className="relative min-h-screen max-w-7xl mx-10 lg:mx-20 flex flex-col items-between z-20">
           <div className="bg-blue-300 bg-opacity-70 max-w-fit px-4 rounded-br-md rounded-bl-md pb-1 pt-2">
