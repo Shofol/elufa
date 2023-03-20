@@ -34,8 +34,8 @@ const AdminLoginForm = () => {
     // try {
     const URL = await account.createOAuth2Session(
       "google",
-      `${window.location.origin}/adminLogin?fromRedirectSuccess=true`,
-      `${window.location.origin}/adminLogin?fromRedirectFailure=true`
+      `${window.location.origin}/adminlogin?fromRedirectSuccess=true`,
+      `${window.location.origin}/adminlogin?fromRedirectFailure=true`
     );
     console.log(URL);
     //   if (URL) {
