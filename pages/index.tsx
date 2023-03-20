@@ -2,10 +2,27 @@ import Head from "next/head";
 import { Inter } from "@next/font/google";
 import Link from "next/link";
 import Image from "next/image";
+import { useEffect } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
+  const fetchEquityPickupResults = async () => {
+    const passResponse = await fetch("/api/equityPickup", {
+      method: "POST",
+    });
+    return passResponse.json();
+  };
+
+  const getEquityPickupResults = async () => {
+    const data = await fetchEquityPickupResults();
+    console.log(JSON.parse(data.response).data);
+  };
+
+  // useEffect(() => {
+  //   getEquityPickupResults();
+  // }, []);
+
   return (
     <>
       <Head>
@@ -36,8 +53,8 @@ export default function Home() {
         <meta name="theme-color" content="#ffffff" />
       </Head>
       <main className="min-h-screen min-w-screen flex items-center relative">
-        <div className="absolute left-0 top-0 w-full h-full bg-black opacity-40 z-10"></div>
-        <Image src="/landingBg.png" fill alt="landing page background" />
+        {/* <div className="absolute left-0 top-0 w-full h-full bg-black opacity-40 z-10"></div> */}
+        <Image src="/background.png" fill alt="landing page background" />
         <div className="relative min-h-screen max-w-7xl mx-10 lg:mx-20 flex flex-col items-between z-20">
           <div className="bg-blue-300 bg-opacity-70 max-w-fit px-4 rounded-br-md rounded-bl-md pb-1 pt-2">
             <Image src="/logo.png" width={100} height={40} alt="logo" />
