@@ -3,18 +3,22 @@ import LicenseForm from "../../components/License/LicenseForm";
 import { CustomerData } from "../../types/Customer";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useAuth } from "../../context/AuthContextProvider";
 
 const ManageLicense = () => {
   const router = useRouter();
-  const authState: any = useAuth();
 
   useEffect(() => {
-    console.log(authState.isAdminLoggedIn);
-    if (!authState.isAdminLoggedIn) {
-      router.push("/adminlogin");
+    const localData: any = localStorage.getItem("auth");
+    const authState: any =
+      localData !== "undefined" ? JSON.parse(localData) : undefined;
+
+    if (authState) {
+      console.log(authState.isAdminLoggedIn);
+      if (!authState.isAdminLoggedIn) {
+        router.push("/adminlogin");
+      }
     }
-  }, [authState]);
+  }, [router]);
 
   const initialValues: CustomerData = {
     email: "",

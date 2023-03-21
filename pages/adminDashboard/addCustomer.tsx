@@ -7,14 +7,18 @@ import { useAuth } from "../../context/AuthContextProvider";
 
 export default function AddCustomer() {
   const router = useRouter();
-  const authState: any = useAuth();
+  // const authState: any = useAuth();
 
   useEffect(() => {
-    console.log(authState.isAdminLoggedIn);
-    if (!authState.isAdminLoggedIn) {
-      router.push("/adminlogin");
+    const localData: any = localStorage.getItem("auth");
+    const authState: any =
+      localData !== "undefined" ? JSON.parse(localData) : undefined;
+    if (authState) {
+      if (!authState.isAdminLoggedIn) {
+        router.push("/adminlogin");
+      }
     }
-  }, [authState]);
+  }, [router]);
 
   return (
     <>

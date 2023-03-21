@@ -3,11 +3,10 @@ import Button from "../../components/Buttons/Button";
 import Image from "next/image";
 import { calcLength, motion } from "framer-motion";
 import { useRouter } from "next/router";
-import { useAuth } from "../../context/AuthContextProvider";
+// import { useAuth } from "../../context/AuthContextProvider";
 
 const AdminDashboard = () => {
   const router = useRouter();
-  const authState: any = useAuth();
 
   const handleCustomerButtonClick = () => {
     router.push("/adminDashboard/addCustomer");
@@ -18,17 +17,35 @@ const AdminDashboard = () => {
   };
 
   useEffect(() => {
-    console.log(authState.isAdminLoggedIn);
-    if (!authState.isAdminLoggedIn) {
-      router.push("/adminLogin");
+    const localData: any = localStorage.getItem("auth");
+    const authState: any =
+      localData !== "undefined" ? JSON.parse(localData) : undefined;
+    if (authState) {
+      if (!authState.isAdminLoggedIn) {
+        router.push("/adminlogin");
+      }
     }
-  }, [authState]);
+  }, [router]);
+
+  const logout = async () => {
+    const passResponse = await fetch("/api/logout", {
+      method: "POST",
+    });
+    return passResponse.json();
+  };
+
+  const handleLogOut = async () => {
+    const response = await logout();
+    localStorage.removeItem("auth");
+    router.push("/adminlogin");
+  };
 
   return (
     <div className="w-screen min-h-screen flex dark:bg-gradient-to-tr from-br-blue to-blue-800">
       <div className="w-3/5	hidden min-h-screen lg:flex justify-center items-center bg-gradient-to-tr from-br-blue to-blue-800 relative">
         <Image src="/adminPortalBg.png" fill alt="verification" />
       </div>
+
       <div className="w-full flex justify-center items-center">
         <div className="flex flex-col max-w-5xl mx-auto justify-center items-start">
           <h2 className="text-left pl-5 font-poppins text-xl">Customer Info</h2>
@@ -149,6 +166,14 @@ const AdminDashboard = () => {
             </div>
           </motion.div>
         </div>
+      </div>
+      <div className="w-48 flex flex-col items-center">
+        <button
+          onClick={handleLogOut}
+          className="bg-blue-500 px-4 py-2 rounded-br-sm rounded-bl-sm font-poppins text-xs"
+        >
+          Log out
+        </button>
       </div>
     </div>
   );
