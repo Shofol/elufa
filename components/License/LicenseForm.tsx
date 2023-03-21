@@ -7,6 +7,7 @@ import TextInput from "../Inputs/TextInput";
 import { Switch } from "@headlessui/react";
 import { Combobox } from "@headlessui/react";
 import "react-toastify/dist/ReactToastify.css";
+import Link from "next/link";
 
 const LicenseForm = ({ initialValues }: { initialValues: CustomerData }) => {
   const [initialFormValues, setInitialFormValues] = useState(initialValues);
@@ -308,7 +309,10 @@ const LicenseForm = ({ initialValues }: { initialValues: CustomerData }) => {
                 </div>
               </div>
             )}
-            <div className="flex lg:justify-end">
+            <div className="flex flex-col lg:flex-row items-center lg:justify-end">
+              <Link href="/adminDashboard" className="mx-4 hover:underline">
+                Cancel
+              </Link>
               <Button type="submit" buttonText="Submit" buttonType="primary" />
             </div>
           </Form>

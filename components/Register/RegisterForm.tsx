@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Account, Client } from "appwrite";
+import Link from "next/link";
 
 const RegisterForm = ({ initialValues }: { initialValues: CustomerData }) => {
   const client = new Client();
@@ -162,7 +163,10 @@ const RegisterForm = ({ initialValues }: { initialValues: CustomerData }) => {
             </div>
             <div className="hidden lg:flex flex-col flex-1"></div>
           </div>
-          <div className="flex lg:justify-end">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-end">
+            <Link href="/adminDashboard" className="mx-4 hover:underline">
+              Cancel
+            </Link>
             <Button type="submit" buttonText="Submit" buttonType="primary" />
           </div>
         </Form>
