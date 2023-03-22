@@ -9,6 +9,7 @@ import { CustomerData, LoginUser } from "../../types/Customer";
 import FogotUserId from "./FogotUserId";
 import SendEmail from "./SendEmail";
 import UpdatePassword from "./UpdatePassword";
+import Link from "next/link";
 
 const FormContainer = () => {
   const initialValues: CustomerData = {
@@ -47,6 +48,7 @@ const FormContainer = () => {
           alt="verification"
         />
       </div>
+
       <div className="flex-1 flex flex-col bg-white dark:bg-gray-900 justify-center px-5 lg:px-20 ">
         <Image src="/logo.png" width={100} height={200} alt="logo" />
         <h1 className="text-gray-700 dark:text-gray-200 text-xl mt-10 mb-5 font-poppins">
@@ -81,6 +83,14 @@ const FormContainer = () => {
           )}
           {router.pathname === "/adminlogin" && <AdminLoginForm />}
         </AuthContextProvider>
+      </div>
+      <div className="w-48 flex flex-col items-center">
+        <Link
+          href="/"
+          className="bg-blue-500 px-4 py-2 rounded-br-sm rounded-bl-sm font-poppins text-xs"
+        >
+          Home
+        </Link>
       </div>
     </div>
   );
